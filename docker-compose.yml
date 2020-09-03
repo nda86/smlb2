@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+ 
+ uwsgi-nginx:
+  build: ./docker-uwsgi-nginx
+  image: nda86/u-nginx
+  restart: always
+  volumes:
+   - "./app:/app"
+  environment:
+   LISTEN_PORT: 80
+   NGINX_MAX_UPLOAD: "75m"
+   NGINX_WORKER_PROCESS: 2
+   NGINX_WORKER_CONNECTION: 1024
+   NGINX_WORKER_OPEN_FILES: 2048
+   STATIC_URL: "/static"
+   STATIC_PATH: "/app/static"
+   STATIC_INDEX: 0
+   UWSGI_INI: "/app"
+   UWSGI_CHEAPER: 2
+   UWSGI_PROCESS: 16
+   UWSGI_READ_TIMEOUT: 3600
+  ports:
+   - "8001:80"
+  depends_on:
+   - db
+
+ db:
+  build: ./docker-postgres
+  image: nda86/postgres
+  restart: always
+  environment:
+   POSTGRES_PASSWORD: postgres
+  volumes:
+   - "./dbdata:/var/lib/postgresql/data"
+
+ adminer:
+  build: ./docker-adminer
+  restart: always
+  ports:
+   - "8081:8080"
+  depends_on:
+   - db
