@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import environ
+
+env = environ.Env()
+environ.Env.read_env("dev.env")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,11 +25,13 @@ LOG_DIR = os.path.join(BASE_DIR, "logs")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'lxka!)_!ryrq+p2cxh-t&_4z1i#j1$#zzafi@$f4*bd(s1gb$s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = env("SECRET_KEY")
+
 
 ALLOWED_HOSTS = ['*']
 
@@ -43,7 +49,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'main',
     'api',
-    'test1',
     'converter'
 ]
 
@@ -83,19 +88,7 @@ WSGI_APPLICATION = 'smlb.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': 'postgres',
-    #     'USER': 'postgres',
-    #     'PASSWORD': 'postgres',
-    #     'HOST': 'db',
-    #     'PORT': '5432',
-    # }
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'dev.sqlite3')
-    }
+    'default': env.db()
 }
 
 

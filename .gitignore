@@ -12,6 +12,8 @@ app/app.iml
 app/**/*.pyc
 app/smlb/__pycache__/*.pyc
 app/*.sqlite3
+app/*.env
+
 
 **/migrations/**
 !**/migrations/__init__.py
