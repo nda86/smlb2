@@ -18,4 +18,4 @@ app/*.env
 **/migrations/**
 !**/migrations/__init__.py
 **/static/**
-!**/static/.gitignore
+!**/static/.gitignoreK
